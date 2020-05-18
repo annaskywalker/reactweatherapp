@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Jost', sans-serif;
+  color: #fff; 
+
+  &:before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-image: url("../img/3107.png");
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: cover;
+  }
+}
+
+#weather-app {
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.weather-container {
+  max-width: 1366px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 60px;
+  margin-bottom: 5px;
+}
+
+.app-date {
+  font-weight: 400;
+  font-size: 24px;
+}
+
+a {
+  color: #333;
+  text-decoration: none;
+}

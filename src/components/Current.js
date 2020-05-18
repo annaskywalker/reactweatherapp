@@ -1,0 +1,68 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+
+import dayjs from "dayjs";
+
+import "../sass/_current.scss";
+
+export class Current extends Component {
+  render() {
+    const { temp, temp_min, temp_max, humidity } = this.props.data.main;
+    const { speed } = this.props.data.wind;
+    const { description, icon } = this.props.data.weather[0];
+
+    const sunrise = dayjs.unix(this.props.data.sys.sunrise).format('HH:MM');
+    const sunset = dayjs.unix(this.props.data.sys.sunset).format('HH:MM');
+
+    return (
+      <div className="current">
+        <div className="base">
+          <div className="icon">
+            <img
+              src={require("../icons/" + icon + ".png")}
+              alt="weather-icon"
+            />
+          </div>
+          <div className="temp">
+            <h2>{Math.round(temp)}°</h2>
+            <h3>{description}</h3>
+          </div>
+        </div>
+
+        <div className="details">
+          <div>
+            <p>{Math.round(temp_max)}°</p>
+            <small>Max temp</small>
+          </div>
+          <div>
+            <p>{Math.round(temp_min)}°</p>
+            <small>Min temp</small>
+          </div>
+          <div>
+            <p>{humidity}%</p>
+            <small>Humidity</small>
+          </div>
+          <div>
+            <p>{speed}</p>
+            <small>Wind speed</small>
+          </div>
+          <div>
+            <p>{sunrise}</p>
+            <small>Sunrise</small>
+          </div>
+          <div>
+            <p>{sunset}</p>
+            <small>Sunset</small>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+//PropTypes
+Current.propTypes = {
+  data: PropTypes.object.isRequired,
+};
+
+export default Current;

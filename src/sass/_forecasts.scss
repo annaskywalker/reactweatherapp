@@ -1,0 +1,38 @@
+.forecast {
+  display: flex;
+
+  .daily {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.3);
+    margin: 0 5px;
+    border-radius: 5px;
+    text-align: center;
+
+    .content {
+      display: block;
+      padding: 5px;
+    }
+
+    .icon {
+      width: 65px;
+      height: 65px;
+      margin: 0 auto;
+      img {
+        max-width: 100%;
+      }
+    }
+
+    .temp {
+      font-weight: 500;
+      font-size: 20px;
+    }
+
+    .description {
+      &:first-letter {
+        text-transform: uppercase;
+      }
+    }
+  }
+}
