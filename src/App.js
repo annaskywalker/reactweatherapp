@@ -20,7 +20,7 @@ export class App extends Component {
     apiCurrent:
       "http://api.openweathermap.org/data/2.5/weather?&units=metric&APPID=",
     apiForecast: "https://api.openweathermap.org/data/2.5/onecall?",
-    key: "42845342a9a608eccd9b81cd82954d49",
+    key: process.env.REACT_APP_WEATHER_API_KEY,
     currentData: null,
     forecastData: null,
     cityName: "",
