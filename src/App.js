@@ -3,11 +3,14 @@ import axios from "axios";
 
 //Lib
 import dayjs from "dayjs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 //Components
 import Search from "./components/Search";
 import Current from "./components/Current";
 import Forecast from "./components/Forecast";
+import Error from "./pages/Error";
 
 //Styles
 import "./sass/_base.scss";
@@ -65,7 +68,6 @@ export class App extends Component {
         )
       )
       .catch((err) => {
-        // what now?
         this.setState({
           error: true,
         });
@@ -82,6 +84,17 @@ export class App extends Component {
     const { apiCurrent, key } = this.state;
     let currentUrl = apiCurrent + key + "&q=" + city;
     this.getCurrentWeather(currentUrl);
+    document.querySelector(".reset-pos").classList.remove("hidden");
+    this.setState({
+      error: false,
+    });
+  };
+  resetPosition = () => {
+    navigator.geolocation.getCurrentPosition(this.getCurrentPos);
+    document.querySelector(".reset-pos").classList.add("hidden");
+    this.setState({
+      error: false,
+    });
   };
   render() {
     const {
@@ -93,13 +106,29 @@ export class App extends Component {
     } = this.state;
     const today = dayjs().format("dddd MMMM DD");
     if (!currentData || !forecastData) {
-      return <div>Loading...</div>;
+      return (
+        <div className="loading">
+          <FontAwesomeIcon icon={faSpinner} spin />
+          <h2>Loading...</h2>
+        </div>
+      );
     } else if (error) {
-      return <div>Error.</div>;
+      return (
+        <div className="weather-container">
+          <Search changeCity={this.changeCity} />
+          <div className="reset-pos">
+            <span onClick={this.resetPosition}>Reset position</span>
+          </div>
+          <Error />
+        </div>
+      );
     } else {
       return (
         <div className="weather-container">
           <Search changeCity={this.changeCity} />
+          <div className="reset-pos">
+            <span onClick={this.resetPosition}>Reset position</span>
+          </div>
           <h1>
             {cityName}, {countryCode}
           </h1>

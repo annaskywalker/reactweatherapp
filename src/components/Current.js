@@ -1,18 +1,27 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import dayjs from "dayjs";
-
 import "../sass/_current.scss";
 
 export class Current extends Component {
+  state = {
+    userTimezone: null
+  };
+  componentDidMount() {
+    this.setState({
+      userTimezone: this.props.data.timezone
+    })
+  }
   render() {
     const { temp, temp_min, temp_max, humidity } = this.props.data.main;
     const { speed } = this.props.data.wind;
     const { description, icon } = this.props.data.weather[0];
 
-    const sunrise = dayjs.unix(this.props.data.sys.sunrise).format('HH:MM');
-    const sunset = dayjs.unix(this.props.data.sys.sunset).format('HH:MM');
+    let calcSunrise = this.props.data.sys.sunrise + this.props.data.timezone;
+    let sunrise = new Date((calcSunrise - this.state.userTimezone) * 1000).toLocaleTimeString().slice(0,5);
+
+    let calcSunset = this.props.data.sys.sunset + this.props.data.timezone;
+    let sunset = new Date((calcSunset - this.state.userTimezone) * 1000).toLocaleTimeString().slice(0,5);
 
     return (
       <div className="current">

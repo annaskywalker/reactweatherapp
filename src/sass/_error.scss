@@ -1,0 +1,31 @@
+.error {
+    text-align: center;
+    background: rgba(255,255,255,.3);
+    width: 46%;
+    margin: 30px auto;
+    padding: 30px;
+    border-radius: 5px;
+    color: #888;
+    font-size: 18px;
+    animation-name: fade;
+    animation-duration: 1s;
+
+    h2 {
+        display: inline;
+        margin-right: 15px;
+    }
+    svg {
+        font-size: 28px;
+    }
+}
+
+@keyframes fade {
+    from {
+      opacity: 0;
+      margin-top: 200px;
+    }
+    to {
+      opacity: 1;
+      margin-top: 30px;
+    }
+  }

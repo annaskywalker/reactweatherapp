@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap");
 
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Jost', sans-serif;
-  color: #fff; 
+  font-family: "Jost", sans-serif;
+  color: #fff;
 
   &:before {
     content: "";
@@ -21,8 +21,6 @@ body {
 }
 
 #weather-app {
-  height: 100%;
-  margin: 0 auto;
   position: relative;
 }
 
@@ -34,14 +32,42 @@ body {
 h1 {
   font-size: 60px;
   margin-bottom: 5px;
+  padding-top: 60px;
 }
 
 .app-date {
   font-weight: 400;
   font-size: 24px;
+  margin-top: 0;
 }
 
-a {
-  color: #333;
-  text-decoration: none;
+.loading {
+  font-size: 16px;
+  opacity: 0.8;
+  text-align: center;
+  width: 100%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  svg {
+    font-size: 42px;
+  }
+}
+
+.reset-pos {
+  color: #876f95;
+  text-align: center;
+  text-decoration: underline;
+  display: inline-block;
+  width: 100%;
+  font-size: 14px;
+
+  span {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    &:hover {
+      color: #333552;
+    }
+  }
 }
