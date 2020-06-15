@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Daily from "./Daily";
-import PropTypes from "prop-types";
+//import PropTypes from "prop-types";
 
 import '../sass/_forecasts.scss';
 
@@ -13,8 +13,8 @@ export class Forecast extends Component {
 }
 
 //PropTypes
-Forecast.propTypes = {
-  daily: PropTypes.object.isRequired,
-};
+// Forecast.propTypes = {
+//   daily: PropTypes.object.isRequired,
+// };
 
 export default Forecast

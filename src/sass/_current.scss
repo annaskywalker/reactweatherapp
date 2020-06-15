@@ -1,32 +1,67 @@
+@import "_mixins.scss";
+
 .current {
   display: flex;
-  
+  animation-name: fadeIn;
+  animation-duration: 1.5s;
+
+  @include for-size(phone) {
+    margin-bottom: 30px;
+  }
+
   .base {
     flex-basis: 50%;
     justify-content: center;
     align-items: center;
     padding: 50px 0;
 
+    @include for-size(phone) {
+      flex-basis: 100%;
+      padding: 20px 0;
+    }
+
     .icon {
       float: left;
 
+      @include for-size(phone) {
+        text-align: center;
+        width: 100%;
+      }
+
       img {
         max-width: 150px;
+
+        @include for-size(phone) {
+          max-width: 100px;
+          margin: 0 auto;
+        }
       }
     }
 
     .temp {
       float: left;
+      @include for-size(phone) {
+        width: 100%;
+      }
       h2 {
         font-size: 68px;
         display: block;
         margin: 5px 10px 5px 30px;
+        @include for-size(phone) {
+          font-size: 48px;
+          margin: 0;
+          text-align: center;
+        }
       }
       h3 {
         display: block;
         margin: 5px 10px 5px 35px;
         &:first-letter {
           text-transform: uppercase;
+        }
+        @include for-size(phone) {
+          margin: 0;
+          text-align: center;
         }
       }
     }
@@ -36,21 +71,38 @@
     display: flex;
     flex-wrap: wrap;
     align-self: flex-start;
-    background: rgba(255,255,255,.3);
+    background: rgba(255, 255, 255, 0.3);
     padding: 20px;
     border-radius: 5px;
+
+    @include for-size(phone) {
+      flex-basis: 100%;
+    }
 
     div {
       flex-basis: calc(33.3333%);
       text-align: center;
 
+      @include for-size(phone) {
+        flex-basis: 50%;
+        margin: 5px 0;
+      }
+
       p {
         font-size: 24px;
         margin: 15px 0 5px 0;
         font-weight: 500;
+
+        @include for-size(phone) {
+          font-size: 18px;
+          margin: 0;
+        }
       }
       small {
         font-size: 16px;
+        @include for-size(phone) {
+          font-size: 14px;
+        }
       }
     }
   }

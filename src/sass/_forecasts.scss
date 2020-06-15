@@ -1,5 +1,14 @@
+@import "_mixins.scss";
+
 .forecast {
   display: flex;
+  animation-name: fadeIn;
+  animation-duration: 1.5s;
+
+  @include for-size(phone) {
+    display: block;
+    overflow: hidden;
+  }
 
   .daily {
     width: 100%;
@@ -9,6 +18,12 @@
     margin: 0 5px;
     border-radius: 5px;
     text-align: center;
+
+    @include for-size(phone) {
+      width: 47%;
+      float: left;
+      margin-bottom: 10px;
+    }
 
     .content {
       display: block;

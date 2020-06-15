@@ -18,7 +18,7 @@ import "./sass/_base.scss";
 export class App extends Component {
   state = {
     apiCurrent:
-      "http://api.openweathermap.org/data/2.5/weather?&units=metric&APPID=",
+      "https://api.openweathermap.org/data/2.5/weather?&units=metric&APPID=",
     apiForecast: "https://api.openweathermap.org/data/2.5/onecall?",
     key: process.env.REACT_APP_WEATHER_API_KEY,
     currentData: null,
@@ -86,6 +86,8 @@ export class App extends Component {
     this.getCurrentWeather(currentUrl);
     document.querySelector(".reset-pos").classList.remove("hidden");
     this.setState({
+      currentData: null,
+      forecastData: null,
       error: false,
     });
   };
@@ -93,6 +95,8 @@ export class App extends Component {
     navigator.geolocation.getCurrentPosition(this.getCurrentPos);
     document.querySelector(".reset-pos").classList.add("hidden");
     this.setState({
+      currentData: null,
+      forecastData: null,
       error: false,
     });
   };
@@ -105,7 +109,7 @@ export class App extends Component {
       error,
     } = this.state;
     const today = dayjs().format("dddd MMMM DD");
-    if (!currentData || !forecastData) {
+    if (!currentData && !error || !forecastData && !error) {
       return (
         <div className="loading">
           <FontAwesomeIcon icon={faSpinner} spin />
