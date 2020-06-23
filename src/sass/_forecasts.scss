@@ -3,7 +3,7 @@
 .forecast {
   display: flex;
   animation-name: fadeIn;
-  animation-duration: 1.5s;
+  animation-duration: 1.2s;
 
   @include for-size(phone) {
     display: block;
