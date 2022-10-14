@@ -1,46 +1,40 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-
 import "../sass/_search.scss";
 
-export class Search extends Component {
-  state = {
-    city: "",
+const Search = ({ changeCity }) => {
+  const [city, setCity] = React.useState("");
+
+  const onSearch = (e) => {
+    setCity(e.target.value);
   };
 
-  onSearch = (e) => {
-    this.setState({ city: e.target.value });
-  };
-
-  getCity = (e) => {
+  const getCity = (e) => {
     e.preventDefault();
-    this.props.changeCity(this.state.city);
-    this.setState({ city: "" });
+    changeCity(city);
+    setCity("");
   };
 
-  render() {
-    return (
-      <form onSubmit={this.getCity} className="search">
-        <div className="search-field">
-          <input
-            type="text"
-            name="city"
-            placeholder="Search for a city..."
-            value={this.state.city}
-            onChange={this.onSearch}
-          />
-          <FontAwesomeIcon icon={faSearch} className="icon" />
-        </div>
-      </form>
-    );
-  }
-}
+  return (
+    <form onSubmit={(e) => getCity(e)} className="search">
+      <div className="search-field">
+        <input
+          type="text"
+          name="city"
+          placeholder="Search for a city..."
+          value={city}
+          onChange={(e) => onSearch(e)}
+        />
+        <FontAwesomeIcon icon={faSearch} className="icon" />
+      </div>
+    </form>
+  );
+};
 
-//PropTypes
 Search.propTypes = {
-  changeCity: PropTypes.func.isRequired,
+  changeCity: PropTypes.func,
 };
 
 export default Search;

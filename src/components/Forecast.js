@@ -1,20 +1,17 @@
-import React, { Component } from 'react'
+import React from "react";
 import Daily from "./Daily";
-//import PropTypes from "prop-types";
+import PropTypes from "prop-types";
+import "../sass/_forecasts.scss";
 
-import '../sass/_forecasts.scss';
+const Forecast = ({ data }) => {
+  return (
+    data &&
+    data.slice(1).map((daily, index) => <Daily key={index} daily={daily} />)
+  );
+};
 
-export class Forecast extends Component {
-    render() {
-        return this.props.data.slice(1).map((daily) => (
-          <Daily key={daily.dt} daily={daily}  />
-        ));
-      }
-}
+Forecast.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object),
+};
 
-//PropTypes
-// Forecast.propTypes = {
-//   daily: PropTypes.object.isRequired,
-// };
-
-export default Forecast
+export default Forecast;
