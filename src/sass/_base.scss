@@ -61,15 +61,17 @@ h1 {
 }
 
 .reset-pos {
-  color: #876f95;
   text-align: center;
-  text-decoration: underline;
   display: inline-block;
   width: 100%;
-  font-size: 14px;
 
-  span {
+  button {
+    color: #876f95;
+    text-decoration: underline;
+    font-size: 14px;
     cursor: pointer;
+    background-color: transparent;
+    border: none;
     transition: all 0.3s ease;
     &:hover {
       color: #333552;

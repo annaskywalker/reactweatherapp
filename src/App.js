@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import axios from "axios";
 
 //Lib
@@ -15,136 +15,114 @@ import Error from "./pages/Error";
 //Styles
 import "./sass/_base.scss";
 
-export class App extends Component {
-  state = {
-    apiCurrent:
-      "https://api.openweathermap.org/data/2.5/weather?&units=metric&APPID=",
-    apiForecast: "https://api.openweathermap.org/data/2.5/onecall?",
-    key: process.env.REACT_APP_WEATHER_API_KEY,
-    currentData: null,
-    forecastData: null,
-    cityName: "",
-    countryCode: "",
-    error: false,
-  };
-  componentDidMount() {
-    navigator.geolocation.getCurrentPosition(this.getCurrentPos);
-  }
-  getCurrentPos = (position) => {
+const App = () => {
+  const apiCurrent =
+    "https://api.openweathermap.org/data/2.5/weather?&units=metric&APPID=";
+  const apiForecast = "https://api.openweathermap.org/data/2.5/onecall?";
+  const key = process.env.REACT_APP_WEATHER_API_KEY;
+  const today = dayjs().format("dddd MMMM DD");
+  const [current, setCurrent] = React.useState(null);
+  const [forecast, setForecast] = React.useState(null);
+  const [cityName, setCityName] = React.useState("");
+  const [countryCode, setCountryCode] = React.useState("");
+  const [error, setError] = React.useState(false);
+  const resetButton = React.useRef();
+
+  React.useEffect(() => {
+    navigator.geolocation.getCurrentPosition(getCurrentPos);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getCurrentPos = (position) => {
     let currentUrl =
-      this.state.apiCurrent +
-      this.state.key +
+      apiCurrent +
+      key +
       "&lat=" +
       position.coords.latitude +
       "&lon=" +
       position.coords.longitude;
 
-    this.getCurrentWeather(currentUrl);
+    getCurrentWeather(currentUrl);
   };
-  getCurrentWeather = (url) => {
+  const getCurrentWeather = (url) => {
     axios
       .get(url)
-      .then((res) =>
-        this.setState(
-          {
-            currentData: res.data,
-            cityName: res.data.name,
-            countryCode: res.data.sys.country,
-            lat: res.data.coord.lat,
-            lon: res.data.coord.lon,
-          },
-          function () {
-            const { apiForecast, lat, lon, key } = this.state;
-            let forecastUrl =
-              apiForecast +
-              "lat=" +
-              lat +
-              "&lon=" +
-              lon +
-              "&units=metric&exclude=current&appid=" +
-              key;
-            this.getForecastWeather(forecastUrl);
-          }
-        )
-      )
+      .then((res) => setWeatherData(res))
       .catch((err) => {
-        this.setState({
-          error: true,
-        });
+        setError(true);
       });
   };
-  getForecastWeather = (url) => {
-    axios.get(url).then((res) =>
-      this.setState({
-        forecastData: res.data.daily,
-      })
-    );
+  const setWeatherData = (res) => {
+    setCurrent(res.data);
+    setCityName(res.data.name);
+    setCountryCode(res.data.sys.country);
+    let forecastUrl =
+      apiForecast +
+      "lat=" +
+      res.data.coord.lat +
+      "&lon=" +
+      res.data.coord.lon +
+      "&units=metric&exclude=current&appid=" +
+      key;
+    getForecastWeather(forecastUrl);
   };
-  changeCity = (city) => {
-    const { apiCurrent, key } = this.state;
+  const getForecastWeather = (url) => {
+    axios.get(url).then((res) => setForecast(res.data.daily));
+  };
+  const changeCity = (city) => {
     let currentUrl = apiCurrent + key + "&q=" + city;
-    this.getCurrentWeather(currentUrl);
-    document.querySelector(".reset-pos").classList.remove("hidden");
-    this.setState({
-      currentData: null,
-      forecastData: null,
-      error: false,
-    });
+    getCurrentWeather(currentUrl);
+    resetButton.current.classList.remove("hidden");
+    setCurrent(null);
+    setForecast(null);
+    setError(false);
   };
-  resetPosition = () => {
-    navigator.geolocation.getCurrentPosition(this.getCurrentPos);
-    document.querySelector(".reset-pos").classList.add("hidden");
-    this.setState({
-      currentData: null,
-      forecastData: null,
-      error: false,
-    });
+  const resetPosition = () => {
+    navigator.geolocation.getCurrentPosition(getCurrentPos);
+    resetButton.current.classList.add("hidden");
+    setCurrent(null);
+    setForecast(null);
+    setError(false);
   };
-  render() {
-    const {
-      currentData,
-      forecastData,
-      cityName,
-      countryCode,
-      error,
-    } = this.state;
-    const today = dayjs().format("dddd MMMM DD");
-    if (!currentData && !error || !forecastData && !error) {
-      return (
-        <div className="loading">
-          <FontAwesomeIcon icon={faSpinner} spin />
-          <h2>Loading...</h2>
-        </div>
-      );
-    } else if (error) {
-      return (
-        <div className="weather-container">
-          <Search changeCity={this.changeCity} />
-          <div className="reset-pos">
-            <span onClick={this.resetPosition}>Reset position</span>
-          </div>
-          <Error />
-        </div>
-      );
-    } else {
-      return (
-        <div className="weather-container">
-          <Search changeCity={this.changeCity} />
-          <div className="reset-pos">
-            <span onClick={this.resetPosition}>Reset position</span>
-          </div>
-          <h1>
-            {cityName}, {countryCode}
-          </h1>
-          <h2 className="app-date">{today}</h2>
-          <Current data={currentData} />
-          <div className="forecast">
-            <Forecast data={forecastData} />
-          </div>
-        </div>
-      );
-    }
-  }
-}
 
+  return !current && !forecast && !error ? (
+    <div className="loading">
+      <FontAwesomeIcon icon={faSpinner} spin />
+      <h2>Loading...</h2>
+    </div>
+  ) : error ? (
+    <div className="weather-container">
+      <Search changeCity={changeCity} />
+      <div className="reset-pos" ref={resetButton}>
+        <button onClick={() => resetPosition()}>Reset position</button>
+      </div>
+      <Error />
+    </div>
+  ) : (
+    <div className="weather-container">
+      <Search changeCity={changeCity} />
+      <div className="reset-pos" ref={resetButton}>
+        <button onClick={() => resetPosition()}>Reset position</button>
+      </div>
+      <h1>
+        {cityName}, {countryCode}
+      </h1>
+      <h2 className="app-date">{today}</h2>
+      <Current
+        temp={current.main.temp}
+        minTemp={current.main.temp_min}
+        maxTemp={current.main.temp_max}
+        humidity={current.main.humidity}
+        wind={current?.wind}
+        description={current.weather?.[0]?.description}
+        icon={current.weather?.[0]?.icon}
+        sunriseTime={current.sys.sunrise}
+        sunsetTime={current.sys.sunset}
+      />
+      <div className="forecast">
+        <Forecast data={forecast} />
+      </div>
+    </div>
+  );
+};
 export default App;
