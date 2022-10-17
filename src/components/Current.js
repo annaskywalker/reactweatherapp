@@ -12,9 +12,25 @@ const Current = ({
   icon,
   sunriseTime,
   sunsetTime,
+  timezone,
 }) => {
-  let sunrise = new Date(sunriseTime * 1000).toLocaleTimeString().slice(0, 5);
-  let sunset = new Date(sunsetTime * 1000).toLocaleTimeString().slice(0, 5);
+  const [sunrise, setSunrise] = React.useState(null);
+  const [sunset, setSunset] = React.useState(null);
+
+  React.useEffect(() => {
+    const getTimes = (time, zone) => {
+      const offset = new Date().getTimezoneOffset() * 60;
+      if (offset > 0) {
+        const calc = time + (zone + offset);
+        return new Date(calc * 1000).toLocaleTimeString().slice(0, 5);
+      } else {
+        const calc = time + (zone - Math.abs(offset));
+        return new Date(calc * 1000).toLocaleTimeString().slice(0, 5);
+      }
+    };
+    setSunrise(getTimes(sunriseTime, timezone));
+    setSunset(getTimes(sunsetTime, timezone));
+  }, [sunriseTime, sunsetTime, timezone]);
 
   return (
     <div className="current">
@@ -70,6 +86,7 @@ Current.propTypes = {
   icon: PropTypes.string,
   sunriseTime: PropTypes.number,
   sunsetTime: PropTypes.number,
+  timezone: PropTypes.number,
 };
 
 export default Current;

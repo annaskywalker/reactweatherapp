@@ -48,7 +48,7 @@ const App = () => {
     axios
       .get(url)
       .then((res) => setWeatherData(res))
-      .catch((err) => {
+      .catch(() => {
         setError(true);
       });
   };
@@ -118,6 +118,7 @@ const App = () => {
         icon={current.weather?.[0]?.icon}
         sunriseTime={current.sys.sunrise}
         sunsetTime={current.sys.sunset}
+        timezone={current.timezone}
       />
       <div className="forecast">
         <Forecast data={forecast} />
